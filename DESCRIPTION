@@ -4,11 +4,11 @@ Title: Coursera's building R Packages Week 4 Assignment
 Version: 0.1.0
 Author: John Marcoe
 Maintainer: John Marcoe <johnmarcoe92@gmail.com>
-Description: The week 4 assignment of Coursera's Building R Packages
+Description: The week 4 assignment of Coursera's Building R Packages containing functions for fars_data
 License: GPL-2
 Encoding: UTF-8
 LazyData: FALSE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: 
     dplyr,
     tidyr,

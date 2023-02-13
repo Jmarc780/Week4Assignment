@@ -9,13 +9,76 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-As part of Coursera's Building R packages we are required to provide documentation to some 
-functions, package the result and load it on github. The criteria are:
 
- 1. Write a vignette to include in your package using knitr and R Markdown
- 2. Write at least one test written using testthat
- 3. Put your package on GitHub
- 4. Set up the repository so that the package can be checked and built on Travis
-Once your package has built on Travis and the build is passing with no errors, warnings, or notes you should add your Travis badge to the README.md file of your package repository.
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
-The functions in this package are designed to process csv file data from the Fatality-Analysis-Reporting-System-(FARS). Available functionality allows us to query file names, load files if available, collect total incidents by month and display them on a map.
+This is a package to analyze the Fatality Analysis Reporting System (FARS).  This package was designed for the Week 4 final assignment for the "Building R Packages" course on Coursera.
+
+## The Data
+
+The data in this package is pulled from the National Highway Traffic Safety Administration Fatality Analysis Reporting System.
+
+(https://crashstats.nhtsa.dot.gov/#/DocumentTypeList/4)
+
+## Reading in the data
+
+Function: fars_read
+Description: This is a simple function that first checks to see if there is an actual file name that is entered as an input. If the file name provided does not exist, then the function stops, and displays a message that indicates the file does not exist. If the file does exist, than the file is read into R via
+the readr package. The package is than converted to a datafram using the dplyr package.
+Usage: fars_read(filename)
+Arguments: filename
+Example: fars_read("accident_2013.csv.bz2")
+
+## Making the File Name
+
+Function: make_filename
+Description: This is a function that takes an input in the form of a four digit value, a year, such as 2017.The function then converts the input to an integer and holds it in a variable called year
+It then takes the year variable and applies it to the string accident_%d.csv.bz2 as accident_2017.csv.bz2
+when the function is called for the year 2017.
+Usage: make_filename(year)
+Arguments: year. A string or integer providing the correct year to use in the file name.
+Example: make_filename(2017)
+
+## Fars Read Years
+
+Function: fars_read_years
+Description: For each input, this function will call the make_filename function, which produces the files name for the info in that year, then loads the generated filename into R using the fars_read function, 
+and then filters the data to just month and years as the cols. If a file with a year doesn't exist, an error message is produced.
+Usage: fars_read_years(years)
+Arguments: years. the years to find files to bring into R. Can be single or multiple values.
+Examples: 
+fars_read_years(years=c(2013,2015))
+fars_read_years(c(2014,2015))
+
+## Fars Summarize read
+
+Function: fars_summarize_read
+Description: The data for the input is read using fars_read_years function
+The dataframes are then unioned using a bind_rows function from dplyr. 
+Produced df is grouped by the year and MONTH.
+The total number of records is then summarized with summarize function
+The results are represented with months as rows and years 
+as columns using the spread fnction from tidyr.
+An error message pops up if file does not exist
+Usage: fars_summarize_years(years)
+Arguments: years. 
+Example: fars_summarize_years(2013)
+
+
+## fars map state 
+Function: fars_map_state 
+Description: year is converted to a filename with make_filename function.
+Crash data is brought in using fars_read function.
+The state number is set to an integer value. State number must be valid or error occurs. 
+An error message occurs if the user input state number is not detected 
+Data is filtered using dplyr. A message is given if there are no motor 
+vehicle crashes to plot. Thresholds for lat & long are set, if it goes above or below, it gets a null value. accident locations are then plotted.
+Usage: fars_summarize_years(years)
+Arguments: state.num &  year. Both integer values.
+Examples: fars_map_state(1, 2013)
+
