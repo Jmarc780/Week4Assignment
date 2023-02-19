@@ -18,3 +18,5 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+URL: https://github.com/Jmarc780/Week4Assignment
+BugReports: https://github.com/Jmarc780/Week4Assignment/issues
